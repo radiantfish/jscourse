@@ -1,55 +1,43 @@
 // CODING CHALLENGE #1
 /*
-//setting data
-const markHeight = 1.74;
-const markMass = 55;
+//TEST DATA #1
+let calcAverage = (a, b, c) => (a + b + c) / 3;
 
-const johnHeight = 1.9;
-const johnMass = 100;
+let scoreDolphins = calcAverage(44, 23, 71);
+let scoreKoalas = calcAverage(65, 54, 49);
+console.log(scoreDolphins, scoreKoalas);
 
-// calculating BMI
-markBMI = markMass / markHeight ** 2;
-console.log(
-  `Mark weights ${markMass} kg and is ${markHeight} m tall. Mark's BMI is ${markBMI}`
-);
+const checkWinner = function (avgDolphins, avgKoalas) {
+  if (avgDolphins >= 2 * avgKoalas) {
+    console.log(`Dolphins win (${avgDolphins} vs ${avgKoalas})`);
+  } else if (avgKoalas >= 2 * avgDolphins) {
+    console.log(`Koalas win (${avgDolphins} vs ${avgKoalas})`);
+  } else {
+    console.log("No team wins...");
+  }
+};
 
-johnBMI = johnMass / (johnHeight * johnHeight);
-console.log(
-  `John weights ${johnMass} kg and is ${johnHeight} m tall. John's BMI is ${johnBMI}`
-);
+checkWinner(scoreDolphins, scoreKoalas);
 
-const markHigherBMI = markBMI > johnBMI;
+//TEST DATA #2
+scoreDolphins = calcAverage(85, 54, 41);
+scoreKoalas = calcAverage(23, 34, 27);
+console.log(scoreDolphins, scoreKoalas);
+checkWinner(scoreDolphins, scoreKoalas);
+*/
 
-if (johnBMI > markBMI) {
-  console.log("John's BMI is higher than the Mark's one!");
-} else {
-  console.log("Mark's BMI is higher than the John's one!");
-}
+// CODING CHALLENGE #2
+/*
+calcTip = function (bill) {
+  return bill >= 50 && bill <= 300 ? bill * 0.15 : bill * 0.2;
+};
+
+const bills = [125, 555, 44];
+let tips = [calcTip(bills[0]), calcTip(bills[1]), calcTip(bills[2])];
+let total = [tips[0] + bills[0], tips[1] + bills[1], tips[2] + bills[2]];
+console.log(bills, tips, total);
 */
 
 // CODING CHALLENGE #3
-/*
-const avScoreDolphins = (97 + 112 + 10) / 3;
-console.log(avScoreDolphins);
-
-const avScoreKoalas = (109 + 95 + 10) / 3;
-console.log(avScoreKoalas);
-
-if (avScoreDolphins > avScoreKoalas && avScoreDolphins >= 100) {
-  console.log("Dolphins win!");
-} else if (avScoreKoalas > avScoreDolphins && avScoreKoalas >= 100) {
-  console.log("Koalas win!");
-} else if (avScoreDolphins === avScoreKoalas) {
-  console.log("Both win!");
-} else {
-  console.log("It's a draw! Nobody wins!");
-}
-*/
 
 // CODING CHALLENGE #4
-let billValue = prompt("How much is the bill?");
-
-console.log(
-  (tipValue =
-    billValue >= 50 && billValue <= 300 ? billValue * 0.15 : billValue * 0.2)
-);
