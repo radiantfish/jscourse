@@ -33,8 +33,8 @@ const startGame = function () {
   diceEl.classList.add('hidden');
 
   // Removing winner class
-  player0El.classList.add('player--winner');
-  player1El.classList.add('player--winner');
+  player0El.classList.remove('player--winner');
+  player1El.classList.remove('player--winner');
 
   // Setting the active player
   player0El.classList.add('player--active');
