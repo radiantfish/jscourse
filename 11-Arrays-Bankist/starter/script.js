@@ -102,7 +102,7 @@ const calcDisplaySummary = function (movements) {
     .filter(mov => mov >= 0)
     .map(deposit => (deposit * 1.2) / 100)
     .filter((int, i, arr) => {
-      console.log(arr);
+      // console.log(arr);
       return int >= 1;
     })
     .reduce((sum, int) => sum + int, 0);
@@ -403,5 +403,15 @@ GOOD LUCK 😀
 //     filteredAges.reduce((sum, cur) => sum + cur, 0) / filteredAges.length;
 //   console.log(`Average age is ${averageAge}`);
 // };
+
+// const calcAverageHumanAge = function (dogAges) {
+//   // Calculate the dog age in human years
+//   const averAge = dogAges
+//     .map(dogAge => (dogAge <= 2 ? dogAge * 2 : dogAge * 4 + 16))
+//     .filter(age => age >= 18)
+//     .reduce((sum, cur, i, arr) => sum + cur / arr.length, 0);
+//   console.log(`Average age is ${averAge}`);
+// };
+
 // calcAverageHumanAge([5, 2, 4, 1, 15, 8, 3]);
 // calcAverageHumanAge([16, 6, 10, 5, 6, 1, 4]);
