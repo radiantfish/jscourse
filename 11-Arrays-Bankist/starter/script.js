@@ -163,6 +163,7 @@ btnTransfer.addEventListener('click', function (e) {
   const receiverAcc = accounts.find(
     acc => acc.username === inputTransferTo.value
   );
+
   console.log(amount, receiverAcc);
   if (
     amount > 0 &&
@@ -179,6 +180,29 @@ btnTransfer.addEventListener('click', function (e) {
     // Update ui
     updateUI(currentAccount);
   }
+  inputTransferTo.value = inputTransferAmount.value = '';
+});
+
+btnClose.addEventListener('click', function (e) {
+  e.preventDefault();
+
+  if (
+    inputCloseUsername.value === currentAccount.username &&
+    Number(inputClosePin.value) === currentAccount.pin
+  ) {
+    console.log('delete');
+    const index = accounts.findIndex(
+      acc => acc.username === currentAccount.username
+    );
+
+    // Delete account
+    accounts.splice(index, 1);
+
+    // Hide UI
+    containerApp.style.opacity = 0;
+  }
+
+  inputCloseUsername.value = inputClosePin.value = '';
 });
 
 /////////////////////////////////////////////////
