@@ -96,7 +96,7 @@ tabsContainer.addEventListener('click', function (e) {
 });
 
 ///////////////////////////////////////
-// Navigaion hovering
+// Menu fade animation
 
 const handleHover = function (e) {
   if (e.target.classList.contains('nav__link')) {
@@ -117,9 +117,45 @@ nav.addEventListener('mouseout', handleHover.bind(1));
 
 ///////////////////////////////////////
 // Sticky navigation
-const initialCoords = section1.getBoundingClientRect();
+// const initialCoords = section1.getBoundingClientRect();
 
-window.addEventListener('scroll', function () {
-  if (this.window.scrollY > initialCoords.top) nav.classList.add('sticky');
+// window.addEventListener('scroll', function () {
+//   if (this.window.scrollY > initialCoords.top) nav.classList.add('sticky');
+//   else nav.classList.remove('sticky');
+// });
+
+// it will be called each time that the observed element is intersedting the root element
+// const obsCallback = function (entries, observer) {
+//   entries.forEach(entry => {
+//     console.log(entry);
+//   });
+// };
+
+// const obsOptions = {
+//   root: null, // the element that the target is intersecting
+//   // null means that our target will intersect the eintire viewport
+
+//   threshold: [0, 0.2], // пороговый уровень
+//   // the percentage of intersection at which the callback function will be called
+// };
+
+// const observer = new IntersectionObserver(obsCallback, obsOptions);
+// // when section1 intersects viewport (root) at 10% then this function obsCallback will be called
+// observer.observe(section1);
+
+const header = document.querySelector('.header');
+const navHeight = nav.getBoundingClientRect().height;
+
+const stickyNav = function (entries) {
+  const [entry] = entries;
+  console.log(entry);
+  if (!entry.isIntersecting) nav.classList.add('sticky');
   else nav.classList.remove('sticky');
+};
+
+const headerObserver = new IntersectionObserver(stickyNav, {
+  root: null, // the entire viewport is the target for intersection
+  threshold: 0, // callback function will be called when section intersects the (viewport) at 0 percentage
+  rootMargin: `-${navHeight}px`,
 });
+headerObserver.observe(header);
