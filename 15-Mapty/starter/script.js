@@ -20,8 +20,22 @@ navigator.geolocation.getCurrentPosition(
     const { latitude } = position.coords;
     const { longitude } = position.coords;
     console.log(`https://www.google.com/maps/@${latitude},${longitude}`);
+
+    const coords = [latitude, longitude];
+
+    // Leaflet api
+
+    const map = L.map('map').setView(coords, 13);
+    // L function is the main function that leaflet gives us as an entry point
+
+    L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution:
+        '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+    }).addTo(map);
+
+    L.marker(coords).addTo(map).bindPopup('Your position').openPopup();
   },
   function () {
-    console.log('Could not get your position :(');
+    alert('Could not get your position :(');
   }
 );
