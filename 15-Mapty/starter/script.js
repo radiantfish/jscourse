@@ -11,12 +11,36 @@ const inputDuration = document.querySelector('.form__input--duration');
 const inputCadence = document.querySelector('.form__input--cadence');
 const inputElevation = document.querySelector('.form__input--elevation');
 
-let map, mapEvent;
+class App {
+  // Private instance properties
+  #map;
+  #mapZoomLevel = 13;
+  #mapEvent;
+  #workouts = [];
 
-// Geolocation
-// 1st function - success callback function, 2nd function - error callback function
-navigator.geolocation.getCurrentPosition(
-  function (position) {
+  constructor() {
+    // Get user's position
+    this._getPosition();
+    // inside the class you need to bind this keyword in eventlisteners all the time
+    form.addEventListener('submit', this._newWorkout.bind(this));
+    inputType.addEventListener('change', this._toggleElevationField);
+  }
+
+  _getPosition() {
+    if (navigator.geolocation)
+      // 1st function - success callback function, 2nd function - error callback function
+
+      // In a regular function call this keyword is set to undefined
+      // So we need to explicitely bind the this keyword with a bind function
+      navigator.geolocation.getCurrentPosition(
+        this._loadMap.bind(this),
+        function () {
+          alert('Could not get your position :(');
+        }
+      );
+  }
+
+  _loadMap(position) {
     // Destructuring: this creates a variable called latitude/longitude based out of socalled property of
     // object coords
     const { latitude } = position.coords;
@@ -25,58 +49,56 @@ navigator.geolocation.getCurrentPosition(
 
     const coords = [latitude, longitude];
 
-    // Leaflet api
-
     // we can add on map object an event listener
-    map = L.map('map').setView(coords, 13);
+    this.#map = L.map('map').setView(coords, 13);
     // L function is the main function that leaflet gives us as an entry point
 
     L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
       attribution:
         '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
-    }).addTo(map);
+    }).addTo(this.#map);
 
     // Instead of add event listener - Handling clicks on map
-    map.on('click', function (mapE) {
-      mapEvent = mapE;
-      form.classList.remove('hidden');
-      inputDistance.focus();
-    });
-  },
-  function () {
-    alert('Could not get your position :(');
+    this.#map.on('click', this._showForm.bind(this));
   }
-);
 
-form.addEventListener('submit', function (e) {
-  e.preventDefault();
+  _showForm(mapE) {
+    this.#mapEvent = mapE;
+    form.classList.remove('hidden');
+    inputDistance.focus();
+  }
 
-  // Clear input fields
-  inputDistance.value =
-    inputDuration.value =
-    inputCadence.value =
-    inputElevation.value =
-      '';
+  _toggleElevationField() {
+    inputElevation.closest('.form__row').classList.toggle('form__row--hidden');
+    inputCadence.closest('.form__row').classList.toggle('form__row--hidden');
+  }
 
-  // Display the marker
-  console.log(mapEvent);
-  const { lat, lng } = mapEvent.latlng;
-  L.marker([lat, lng])
-    .addTo(map)
-    .bindPopup(
-      L.popup({
-        maxWidth: 250,
-        minWidth: 100,
-        autoClose: false,
-        closeOnClick: false,
-        className: 'running-popup',
-      })
-    )
-    .setPopupContent('Workout')
-    .openPopup();
-});
+  _newWorkout(e) {
+    e.preventDefault();
 
-inputType.addEventListener('change', function () {
-  inputElevation.closest('.form__row').classList.toggle('form__row--hidden');
-  inputCadence.closest('.form__row').classList.toggle('form__row--hidden');
-});
+    // Clear input fields
+    inputDistance.value =
+      inputDuration.value =
+      inputCadence.value =
+      inputElevation.value =
+        '';
+
+    // Display the marker
+    const { lat, lng } = this.#mapEvent.latlng;
+    L.marker([lat, lng])
+      .addTo(this.#map)
+      .bindPopup(
+        L.popup({
+          maxWidth: 250,
+          minWidth: 100,
+          autoClose: false,
+          closeOnClick: false,
+          className: 'running-popup',
+        })
+      )
+      .setPopupContent('Workout')
+      .openPopup();
+  }
+}
+
+const app = new App();
